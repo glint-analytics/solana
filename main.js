@@ -43,18 +43,18 @@ HxOverrides.now = function() {
 var Main = function() { };
 Main.__name__ = "Main";
 Main.main = function() {
-	haxe_Log.trace("running",{ fileName : "src2/Main.hx", lineNumber : 12, className : "Main", methodName : "main"});
+	haxe_Log.trace("running",{ fileName : "src/Main.hx", lineNumber : 12, className : "Main", methodName : "main"});
 	var httpClient = new http_HttpClient();
 	var request = http_HttpRequest.fromString("https://www.google.com");
 	request.method = "GET";
 	thenshim_Promise.then(httpClient.makeRequest(request,null,null,null),function(response) {
 		if(response.httpStatus != 200) {
-			haxe_Log.trace("error http" + response.httpStatus,{ fileName : "src2/Main.hx", lineNumber : 17, className : "Main", methodName : "main"});
+			haxe_Log.trace("error http" + response.httpStatus,{ fileName : "src/Main.hx", lineNumber : 17, className : "Main", methodName : "main"});
 			throw haxe_Exception.thrown("error http" + response.httpStatus);
 		}
-		haxe_Log.trace(response,{ fileName : "src2/Main.hx", lineNumber : 22, className : "Main", methodName : "main"});
+		haxe_Log.trace(response,{ fileName : "src/Main.hx", lineNumber : 22, className : "Main", methodName : "main"});
 	},function(error) {
-		haxe_Log.trace(" httpclient error",{ fileName : "src2/Main.hx", lineNumber : 25, className : "Main", methodName : "main", customParams : [error]});
+		haxe_Log.trace(" httpclient error",{ fileName : "src/Main.hx", lineNumber : 25, className : "Main", methodName : "main", customParams : [error]});
 	});
 };
 Math.__name__ = "Math";
@@ -688,6 +688,9 @@ haxe_http_HttpNodeJs.prototype = $extend(haxe_http_HttpBase.prototype,{
 			}
 		}
 		this.req.end();
+		this.req.on("error",function(e) {
+			_gthis.onError("No connection");
+		});
 	}
 	,customRequest: function(post,method) {
 		this._customRequestPost = post;
