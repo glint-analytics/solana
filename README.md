@@ -14,9 +14,7 @@
 - [Fixing errors on macOS](#10-fixing-errors-on-macos)
 - [Deploy the programs](#11-deploy-the-programs)
 
-## Glint Programs Setup and Usage
-
-This project contains an NFT contract built for Solana using Anchor. Follow the steps below to install dependencies, set up your workspace, and deploy the contract.
+## System Prerequisites and dependencies
 
 ### 1. Install Rust
 
@@ -61,16 +59,17 @@ solana --version
 
 ### 3. Set Up Solana Config
 
-Make sure your Solana CLI is pointing to the correct network (either localnet, devnet, or mainnet). For development, it's usually best to use Devnet:
-
-```bash
-solana config set --url https://api.devnet.solana.com
-```
-
 To create a new wallet keypair:
 
 ```bash
 solana-keygen new --outfile ~/.config/solana/id.json
+```
+
+If you want to use devnet and not just localnet
+Make sure your Solana CLI is pointing to the correct network (either localnet, devnet, or mainnet). For development, it's usually best to use Devnet:
+
+```bash
+solana config set --url https://api.devnet.solana.com
 ```
 
 To fund your wallet on Devnet:
@@ -105,6 +104,10 @@ After installing Anchor, confirm the installation with:
 anchor --version
 ```
 
+## Workspace setup
+
+git clone this repo.
+
 ### 5. Install Dependencies for Solana and Anchor Interaction
 
 From within your Anchor project directory, install the required packages:
@@ -124,7 +127,7 @@ ANCHOR_WALLET=/Users/your_username/.config/solana/id.json
 ANCHOR_PROVIDER_URL=http://127.0.0.1:8899
 ```
 
-### 6. Configuring the tsconfig.json
+### 6. Configuring the tsconfig.json (can skip if repo is cloned)
 
 Next, you'll want to configure your TypeScript setup. Create a `tsconfig.json` file in the root of your project:
 
@@ -141,7 +144,11 @@ Next, you'll want to configure your TypeScript setup. Create a `tsconfig.json` f
 }
 ```
 
-### 7. Configure Localnet
+### 7. Configure Localnet (can skip if repo is cloned)
+
+Make equivalent: `make soft-fork`
+
+Skip already done
 
 NOTE: custom programs are not available on localnet, so jump to the Soft Fork Metaplex section if you want to test the programs.
 
@@ -194,9 +201,11 @@ address = "7FTdQdMqkk5Xc2oFsYR88BuJt2yyCPReTpqr3viH6b6C"
 filename = "test-programs/account.json"
 ```
 
+## Testing 
+
 ### 8. Start tests on Anchor
 
-Configure Anchor to use on localnet: By default, Anchor uses Devnet, but you can configure it to use localnet by editing the Anchor.toml file in your project directory. Change the cluster option to localnet:
+Configure Anchor to use on localnet: By default, Anchor uses Devnet, but you can configure it to use localnet by editing the Anchor.toml file in your project directory. Change the cluster option to localnet (no need if cloned):
 
 ```toml
 cluster = "localnet"
@@ -215,7 +224,11 @@ Start the tests:
 anchor test
 ```
 
+## Running and deploying
+
 ### 9. Start the validator on localnet
+
+Make equivalent: `make node`
 
 Set the url to localhost and start the validator after:
 
@@ -242,13 +255,17 @@ After setting up the local node, you need to build, deploy programs and run scri
 
 #### 10.1 Build Programs
 
+Make equivalent: `make deploy-build`
+
 ```bash
 anchor build
 ```
 
 #### 10.2 Deploy
 
-Deploy the programa (this will use the ID on declare_id! inside each program `lib.rs` file):
+Make equivalent: `make deploy-build`
+
+Deploy the programs (this will use the ID on declare_id! inside each program `lib.rs` file):
 
 ```bash
 solana program deploy target/deploy/glint_nft.so
@@ -256,6 +273,7 @@ solana program deploy target/deploy/glint_vote.so
 solana program deploy target/deploy/glint_reward.so
 ```
 
+Make equivalent: `make deploy`
 Get the Program ID displayed on the terminal and update the contract, build (anchor build) and deploy again.
 
 ```bash
@@ -264,9 +282,16 @@ solana program deploy --program-id <TOKEN_PROGRAM_ID> target/deploy/glint_vote.s
 solana program deploy --program-id <TOKEN_PROGRAM_ID> target/deploy/glint_reward.so
 ```
 
-NOTE: If you end up generating new Program IDs, you'll need to update the Anchor.toml file with the new IDs. And in some cases, you'll need to update the `declare_id!` on each corresponding program `lib.rs` file.
+IMPORTANT: If you end up generating new Program IDs, you'll need to update the Anchor.toml file with the new IDs. And in some cases, you'll need to update the `declare_id!` on each corresponding program `lib.rs` file.
 
-Sync the keys:
+You also need tu update the make file  and the test-programs initialization file
+
+```bash 
+$ solana program deploy --program-id 9q2DR84bJri6Xoryq95RBsFKjo9kKecwSAZ5ptbSjrNu target/deploy/glint_nft.so
+Error: Initial deployments require a keypair be provided for the program id
+```
+
+Or you can theoritically sync the keys but the command doesn't exist for me:
 
 ```bash
 anchor keys sync
@@ -279,6 +304,8 @@ make soft-fork
 make node
 make deploy-build
 make deploy
+
+
 make test
 ```
 
