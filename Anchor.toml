@@ -34,8 +34,8 @@ startup_wait = 10000
 
 [[test.genesis]]
 address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-program = "tests/metadata.so"
+program = "test-programs/metaplex_token_metadata_program.so"
 
 [[test.validator.account]]
 address = "7FTdQdMqkk5Xc2oFsYR88BuJt2yyCPReTpqr3viH6b6C"
-filename = "tests/nft.json"
+filename = "test-programs/account.json"
