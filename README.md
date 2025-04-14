@@ -263,6 +263,17 @@ anchor build
 
 #### 10.2 Deploy
 
+
+Every program needs a keypair, if there aren"t any in ./target/deploy or you want to change it for a reason do for 
+
+```bash
+solana-keygen new -o ./target/deploy/glint_nft-keypair.json
+solana-keygen pubkey ./target/deploy/glint_nft-keypair.json
+```
+
+Then copy the pubkey in the  declare_id! of the .rs file
+
+
 Make equivalent: `make deploy-build`
 
 Deploy the programs (this will use the ID on declare_id! inside each program `lib.rs` file):
