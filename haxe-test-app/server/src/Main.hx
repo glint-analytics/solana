@@ -72,6 +72,7 @@ class Main {
     static function addBalance(sols:Float) {
         return new Promise((resolve, reject) -> {
             var connect = Utils.connect();
+            trace('Airdropping $sols sols to ${Utils.feePayer}');
             Utils.airdrop(Utils.feePayer.publicKey, sols, connect.provider).then (_ -> {
                 resolve({});
             }, error -> {
@@ -96,6 +97,7 @@ class Main {
         return new Promise((resolve, reject) -> {
             var connect = Utils.connect();
             var progs = new Programs();
+            trace("Initialize config/nft");
             progs.initializeNft(connect.connection).then (_ -> {
                 resolve({});
             }, error -> {

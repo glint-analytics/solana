@@ -61,7 +61,7 @@ class MainView extends VBox {
             trace(response);
             return null;
         }, error -> {
-            trace("error", error.transactionLogs);
+            trace("error", error);
         });
     }
 
@@ -72,7 +72,7 @@ class MainView extends VBox {
             trace(response);
             return null;
         }, error -> {
-            trace("error", error.transactionLogs);
+            trace("error", error);
         });
     }
 
@@ -85,18 +85,18 @@ class MainView extends VBox {
             trace(response);
             return null;
         }, error -> {
-            trace("error", error.transactionLogs);
+            trace("error", error);
         });
     }
 
     @:bind(votingRoundField, UIEvent.SUBMIT)
     private function onVotingRoundField(_) {
         var client = new HttpClient();
-        client.post("http://localhost:2345/init-vote-round", Json.stringify({ votingRound: voteDurationField.text })).then(response -> {
+        client.post("http://localhost:2345/init-vote-round", Json.stringify({ votingRound: votingRoundField.text })).then(response -> {
             trace(response);
             return null;
         }, error -> {
-            trace("error", error.transactionLogs);
+            trace("error", error);
         });
     }
 
@@ -107,7 +107,7 @@ class MainView extends VBox {
             trace(response);
             return null;
         }, error -> {
-            trace("error", error.transactionLogs);
+            trace("error", error);
         });
     }
 
@@ -118,7 +118,7 @@ class MainView extends VBox {
             trace(response);
             return null;
         }, error -> {
-            trace("error", error.transactionLogs);
+            trace("error", error);
         });
     }
 }
