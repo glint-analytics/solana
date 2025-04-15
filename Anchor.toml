@@ -3,18 +3,18 @@ seeds = false
 skip-lint = false
 [programs.localnet]
 glint_nft = "7TQ26XbDSZMda68uSueTLGQ9zXEN3Tx5bMyoLMSzKSzN"
-glint_vote = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
-glint_reward = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_vote = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_reward = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
 
 [programs.devnet]
 glint_nft = "7TQ26XbDSZMda68uSueTLGQ9zXEN3Tx5bMyoLMSzKSzN"
-glint_vote = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
-glint_reward = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_vote = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_reward = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
 
 [programs.testnet]
 glint_nft = "7TQ26XbDSZMda68uSueTLGQ9zXEN3Tx5bMyoLMSzKSzN"
 glint_vote = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
-glint_reward = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_reward = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
 
 [registry]
 url = "https://api.apr.dev"
