@@ -15,7 +15,9 @@ class Config {
     public static var glintRewardProgramId:PublicKey = new PublicKey("EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe");
 
 
-    public static inline var ANCHOR_PROVIDER_URL = "http://127.0.0.1:8899";
+    public static inline var ANCHOR_PROVIDER_URL =  "https://api.devnet.solana.com";
+    
+    //"http://127.0.0.1:8899";
 
     public static var feePayer = Keypair.fromSecretKey(Reflect.field(Bs58, "default")
 		.decode("588FU4PktJWfGfxtzpAAXywSNt74AvtroVzGfKkVN1LwRuvHwKGr851uH8czM5qm4iqLbs1kKoMKtMJG4ATR7Ld2" /*

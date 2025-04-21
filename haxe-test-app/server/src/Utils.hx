@@ -10,7 +10,6 @@ import externs.solana.web3.Keypair;
 import promises.Promise;
 
 class Utils {
-	public static inline var ANCHOR_PROVIDER_URL = "http://127.0.0.1:8899";
 
 	// var bs58 = Reflect.field(Bs58, "default");
 	public static var feePayer = Keypair.fromSecretKey(Reflect.field(Bs58, "default")
@@ -26,14 +25,14 @@ class Utils {
 	 * @returns {connection, provider, umi}
 	 */
 	public static function connect() {
-		trace('Connecting to ${ANCHOR_PROVIDER_URL}');
-		var connection = new Connection(ANCHOR_PROVIDER_URL, "confirmed");
+		trace('Connecting to ${Config.ANCHOR_PROVIDER_URL}');
+		var connection = new Connection(Config.ANCHOR_PROVIDER_URL, "confirmed");
 
 		var provider = new AnchorProvider(connection, new AnchorWallet(feePayer), {
 			commitment: "confirmed",
 		});
 		Anchor.setProvider(provider);
-		var umi = Umi.createUmi(ANCHOR_PROVIDER_URL).use(Umi2.walletAdapterIdentity(provider.wallet));
+		var umi = Umi.createUmi(Config.ANCHOR_PROVIDER_URL).use(Umi2.walletAdapterIdentity(provider.wallet));
 		return {connection: connection, provider: provider, umi: umi};
 	}
 

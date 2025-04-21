@@ -42,33 +42,6 @@ class AdminTransactions extends Transactions {
         var transaction =  new Transaction().add(initializeIx);
         return transaction;
 	}
-/*
-
-    public function initializeNft(connection:Connection) {
-		return new Promise((resolve, reject) -> {
-			var discriminator = getInstructionDiscriminator("initialize");
-			var initializeIx = new TransactionInstruction({
-				programId: untyped externs.anchor.Anchor.workspace.GlintNft.programId,
-				keys: [
-					{pubkey: configNft, isSigner: false, isWritable: true},
-					{pubkey: Config.feePayer.publicKey, isSigner: true, isWritable: true},
-					{pubkey: SystemProgram.programId, isSigner: false, isWritable: false},
-				],
-				data: discriminator,
-			});
-			var transaction = new Transaction().add(initializeIx);
-			trace(transaction);
-
-			connection.sendTransaction(transaction, [Config.feePayer], {skipPreflight: false}).then(_ -> {
-				connection.confirmTransaction(_);
-			}).then(_ -> {
-				resolve(_);
-			}, error -> {
-				reject(error);
-			});
-		});*/
-
-
 
     public static function initializeVoteRound(adminKey:PublicKey, roundId:Int):Transaction {
         var roundIdBuffer = new BN(roundId).toArrayLike(Buffer, "le", 8);
