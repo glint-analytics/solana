@@ -1,5 +1,5 @@
 --class-path src
---js ../../main.js
+--js bin/main.js
 --main Main
 --library http
 --library hxnodejs
