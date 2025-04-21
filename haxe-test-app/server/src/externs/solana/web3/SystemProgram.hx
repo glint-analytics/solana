@@ -6,4 +6,9 @@ import promises.Promise;
 extern class  SystemProgram {
     public static var programId:PublicKey;
     public static function createAccount(o:Dynamic):Dynamic;
+
+    /**
+     * Generate a transaction instruction that transfers lamports from one account to another
+     */
+    public static function transfer(params: Dynamic): TransactionInstruction;
 }

@@ -274,7 +274,7 @@ class Programs {
 			return untyped provider.sendAll([{tx: createSPLAccount, signers: [splTokenAccount]}]);
 		}).then(tx -> {
 			trace( 'Created SPL Token Account Tx ${tx}');
-			return SplToken.getSplTokenATA();
+			return null; //SplToken.getSplTokenATA();
 		}).then(splTokenATA -> {
 				//SPL Token Associated Token Address (ATA) ${splTokenATA.toBase58()}`
 			var createSPLATA  =  new Transaction().add(
