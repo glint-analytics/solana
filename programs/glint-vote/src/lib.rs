@@ -136,7 +136,7 @@ pub mod glint_vote {
      * @param ctx: The context to vote for a dashboard ID.
      * @param _dashboard_id: The dashboard ID to vote for.
      */
-    pub fn vote(ctx: Context<Round>, _dashboard_id: u64, _round_id: u64) -> Result<()> {
+    pub fn vote(ctx: Context<Round>, _dashboard_id: u128, _round_id: u64) -> Result<()> {
         // Fetch the accounts from the context
         let voter_key: Pubkey = ctx.accounts.signer.key();
         let round_account: &Account<'_, VotingState> = &ctx.accounts.round_account;
@@ -240,7 +240,7 @@ pub mod glint_vote {
  * @param dashboard_id: The dashboard ID to update.
  * @param score: The score to update.
  */
-fn update_top_three(winners_account: &mut Account<WinnersState>, dashboard_id: u64, score: u64) {
+fn update_top_three(winners_account: &mut Account<WinnersState>, dashboard_id: u128, score: u64) {
     let wa: &mut Account<'_, WinnersState> = winners_account;
 
     // First check if dashboard_id is already in top three
@@ -342,7 +342,7 @@ pub struct Initialize<'info> {
     pub system_program: Program<'info, System>,
 }
 #[derive(Accounts)]
-#[instruction(_dashboard_id: u64, _round_id: u64)]
+#[instruction(_dashboard_id: u128, _round_id: u64)]
 pub struct Round<'info> {
     #[account(
         init_if_needed,
@@ -430,7 +430,7 @@ pub struct VotingState {
 }
 #[account]
 pub struct WinnersState {                   // Tracks which addresses have won               
-    pub top_three: [u64; 3],                // The top 3 dashboard IDs
+    pub top_three: [u128; 3],                // The top 3 dashboard IDs
     pub top_three_scores: [u64; 3],         // The top 3 scores
 }
 #[account]
@@ -464,7 +464,7 @@ pub struct VotingDurationChanged {
 pub struct VoteCasted {
     pub round: u64,                             // The round that was voted in
     pub voter: Pubkey,                          // The voter's public key
-    pub dashboard: u64,                         // The dashboard ID that was voted for
+    pub dashboard: u128,                         // The dashboard ID that was voted for
     pub score: u64,                             // The new score for the dashboard ID
 }
 

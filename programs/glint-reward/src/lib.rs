@@ -82,7 +82,7 @@ pub mod glint_reward {
             return Err(ErrorCode::InvalidWinnersAccount.into());
         }
         // Get the top three winners
-        let top_three: [u64; 3] = winners_account.top_three;
+        let top_three: [u128; 3] = winners_account.top_three;
 
         //// Ensure that the round is over
         // Derive the PDA for the `round_account` in the `vote` program   
@@ -105,7 +105,7 @@ pub mod glint_reward {
             return Err(ErrorCode::InvalidPosition.into());
         }
         // Get the `dashboard_id` for the given winner position
-        let claimant_dashboard_id: u64 = top_three[position as usize];
+        let claimant_dashboard_id: u128 = top_three[position as usize];
         // Ensure there is a winner. The round might not have winners.
         if claimant_dashboard_id == 0 {
             return Err(ErrorCode::InvalidWinner.into());

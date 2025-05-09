@@ -246,7 +246,7 @@ describe("glint-nft", async () => {
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(777);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
@@ -287,7 +287,7 @@ describe("glint-nft", async () => {
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(777);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
@@ -330,7 +330,7 @@ describe("glint-nft", async () => {
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(888);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     const dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
@@ -371,7 +371,7 @@ describe("glint-nft", async () => {
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(888);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
@@ -420,7 +420,7 @@ describe("glint-nft", async () => {
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(891);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
@@ -519,7 +519,7 @@ describe("glint-nft", async () => {
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(1000);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId

@@ -94,7 +94,7 @@ describe("rewards", async () => {
 
   async function mintNFT(dashboardId: anchor.BN, recipient: PublicKey) {
     dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
-      [dashboardId.toArrayLike(Buffer, "le", 8)],
+      [dashboardId.toArrayLike(Buffer, "le", 16)],
       NFTProgram.programId
     )[0];
     associatedTokenAccount = await getAssociatedTokenAddress(
@@ -387,7 +387,7 @@ describe("rewards", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -549,7 +549,7 @@ describe("rewards", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -726,7 +726,7 @@ describe("rewards", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -874,7 +874,7 @@ describe("rewards", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -1073,7 +1073,7 @@ describe("rewards", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];

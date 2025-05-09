@@ -78,7 +78,7 @@ describe("vote", async () => {
     dashboardId: anchor.BN
   ): Promise<PublicKey> {
     return anchor.web3.PublicKey.findProgramAddressSync(
-      [dashboardId.toArrayLike(Buffer, "le", 8)],
+      [dashboardId.toArrayLike(Buffer, "le", 16)],
       NFTProgram.programId
     )[0];
   }
@@ -96,7 +96,7 @@ describe("vote", async () => {
     return anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboardId.toArrayLike(Buffer, "le", 8),
+        dashboardId.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -341,7 +341,7 @@ describe("vote", async () => {
       NFTProgram.programId
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       NFTProgram.programId
@@ -371,7 +371,7 @@ describe("vote", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -449,7 +449,7 @@ describe("vote", async () => {
       NFTProgram.programId
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       NFTProgram.programId
@@ -479,7 +479,7 @@ describe("vote", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -558,7 +558,7 @@ describe("vote", async () => {
       NFTProgram.programId
     )[0];
     // Generate the seed for the intitialization of the Dashboard Account
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       NFTProgram.programId
@@ -588,7 +588,7 @@ describe("vote", async () => {
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -651,14 +651,14 @@ describe("vote", async () => {
 
     // Generate the seed for the intitialization of the Dashboard Account
     dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
-      [dashboard_id.toArrayLike(Buffer, "le", 8)],
+      [dashboard_id.toArrayLike(Buffer, "le", 16)],
       NFTProgram.programId
     )[0];
 
     scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
       [
         Buffer.from("voting_state_scores"),
-        dashboard_id.toArrayLike(Buffer, "le", 8),
+        dashboard_id.toArrayLike(Buffer, "le", 16),
       ],
       VoteProgram.programId
     )[0];
@@ -725,14 +725,14 @@ describe("vote", async () => {
       await provider.sendAndConfirm(transaction);
 
       dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
-        [dashboard_id.toArrayLike(Buffer, "le", 8)],
+        [dashboard_id.toArrayLike(Buffer, "le", 16)],
         NFTProgram.programId
       )[0];
 
       scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
         [
           Buffer.from("voting_state_scores"),
-          dashboard_id.toArrayLike(Buffer, "le", 8),
+          dashboard_id.toArrayLike(Buffer, "le", 16),
         ],
         VoteProgram.programId
       )[0];
@@ -790,7 +790,7 @@ describe("vote", async () => {
       scoresAccount = anchor.web3.PublicKey.findProgramAddressSync(
         [
           Buffer.from("voting_state_scores"),
-          dashboard_id.toArrayLike(Buffer, "le", 8),
+          dashboard_id.toArrayLike(Buffer, "le", 16),
         ],
         VoteProgram.programId
       )[0];

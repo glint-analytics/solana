@@ -62,7 +62,7 @@ pub mod glint_nft {
      * @param _dashboard_id: The Dashboard ID as the seed key
      * @param nft_id: The NFT ID to set for the Dashboard ID
      */
-    pub fn set_dashboard_id(ctx: Context<Dashboard>, _dashboard_id: u64, nft_id: Pubkey) -> Result<()> {
+    pub fn set_dashboard_id(ctx: Context<Dashboard>, _dashboard_id: u128, nft_id: Pubkey) -> Result<()> {
         // Ensure the caller is the admin
         if ctx.accounts.config.admin != ctx.accounts.signer.key() {
             return Err(ErrorCode::Unauthorized.into());
@@ -102,7 +102,7 @@ pub mod glint_nft {
      */
     pub fn mint_nft(
         ctx: Context<InitNFT>,
-        _dashboard_id: u64,
+        _dashboard_id: u128,
         name: String,  
         symbol: String, 
         uri: String,
@@ -208,7 +208,7 @@ pub struct Initialize<'info> {
     pub system_program: Program<'info, System>,
 }
 #[derive(Accounts)]
-#[instruction(_dashboard_id: u64)]
+#[instruction(_dashboard_id: u128)]
 pub struct InitNFT<'info> {
     /// CHECK: ok
     #[account(
@@ -266,7 +266,7 @@ pub struct InitNFT<'info> {
     pub rent: Sysvar<'info, Rent>,
 }
 #[derive(Accounts)]
-#[instruction(_dashboard_id: u64)]
+#[instruction(_dashboard_id: u128)]
 pub struct Dashboard<'info> {
     #[account(
         init_if_needed,
@@ -309,12 +309,12 @@ pub struct Config {
 #[event]
 pub struct NFTMinted {
     pub owner: Pubkey,
-    pub dashboard_id: u64,
+    pub dashboard_id: u128,
     pub nft_id: Pubkey,
 }
 #[event]
 pub struct ChangedDashboardId {
-    pub dashboard_id: u64,
+    pub dashboard_id: u128,
     pub new_nft_id: Pubkey,
 }
 #[event]
