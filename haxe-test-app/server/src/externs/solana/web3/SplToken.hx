@@ -24,6 +24,7 @@ extern class SplToken {
         mint:PublicKey, ?programId:String,  ?associatedProgramId:String):TransactionInstruction;
     static function createTransferInstruction():Dynamic;
     static function getAssociatedTokenAddress(mintKey:Dynamic, signKey:Dynamic, ?bool:Bool):Promise<Dynamic>;
+    static function getAssociatedTokenAddressSync(mintKey:Dynamic, signKey:Dynamic, ?bool:Bool):Dynamic;
     static function getMint(connection:Connection, publiKey:PublicKey):Promise<Dynamic>;
     static function getAccountLenForMint(o1:Dynamic):Promise<Dynamic>;
     static var MINT_SIZE:Int;

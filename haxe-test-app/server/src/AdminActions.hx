@@ -2,7 +2,7 @@ import js.Syntax;
 import externs.metaplex.Umi;
 import js.node.Buffer;
 import externs.metaplex.MplTokenMedata;
-import externs.anchor.Keypair;
+import externs.solana.web3.Keypair;
 import externs.solana.web3.PublicKey;
 import externs.solana.web3.SplToken;
 import externs.solana.web3.Transaction;
@@ -32,8 +32,10 @@ class AdminActions {
 		return new Promise((resolve, reject) -> {
 			var transaction = AdminTransactions.initializeVoteRound(provider.publicKey, roundId);
 			connection.sendTransaction(transaction, [Config.feePayer], {skipPreflight: false}).then(_ -> {
+				trace(_);
 				connection.confirmTransaction(_);
 			}).then(_ -> {
+				trace(_);
 				resolve(_);
 			}, error -> {
 				trace(error);
@@ -109,7 +111,29 @@ class AdminActions {
 		});
 	}
 
-	public function mintNFT(provider:AnchorProvider, umi:Dynamic, dashboardId:Int, recipientPubKey:PublicKey) {
+	public function mintNFT(connection:Connection, umi:Dynamic, dashboardId:Int, recipientPK: PublicKey):Promise<Bool> {
+
+		return new Promise((resolve, reject) -> {
+
+			// In Solana, each token is uniquely identified by a Mint Address
+			var mint = Keypair.generate();
+			trace('Mint account ${mint.publicKey.toBase58()}');
+
+
+		  var transaction = AdminTransactions.mintNFT(umi, mint, dashboardId, recipientPK);
+				
+		  connection.sendTransaction(transaction, [Config.feePayer, mint], {skipPreflight: false}).then(_ -> {
+			connection.confirmTransaction(_);
+		  }).then(_ -> {
+			resolve(_);
+		  }, error -> {
+			trace(error);
+			reject(error);
+		  });
+		});
+	  }
+
+	public function mintNFTAnchor(provider:AnchorProvider, umi:Dynamic, dashboardId:Int, recipientPubKey:PublicKey) {
 		return new Promise((resolve, reject) -> {
 			trace('Fee payer account ${provider.publicKey.toBase58()}');
 			trace('Recipient account ${recipientPubKey.toBase58()}');
@@ -119,7 +143,7 @@ class AdminActions {
 			trace('Dashboard ID ${dashboardId}');
 
 			var dashboardPDA = PublicKey.findProgramAddressSync(
-				[new BN(dashboardId).toArrayLike(Buffer, "le", 8)],
+				[new BN(dashboardId).toArrayLike(Buffer, "le", 16)],
 				Config.glintNftProgramId
 			)[0];
 
@@ -130,13 +154,10 @@ class AdminActions {
 			trace('Mint account ${mint.publicKey.toBase58()}');
 
 
-			trace("eeee");
 			// The Token Metadata account holds properties of the token such as name, off chain metadata uri, description of the token, and the tokens symbol
 			var metadataPDA = MplTokenMetadata.findMetadataPda(umi, {
 				mint: Umi.publicKey(mint.publicKey),
 			})[0];
-
-			trace("oooooo");
 
 			// While the Mint account of stores initial minting details of Mint such as number of decimals, the total supply, and mint and freeze authorities
 			

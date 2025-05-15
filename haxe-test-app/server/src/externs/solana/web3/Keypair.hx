@@ -4,4 +4,5 @@ package externs.solana.web3;
 extern class  Keypair {
   public static function fromSecretKey(secretKey:String):Keypair;
   public var publicKey:PublicKey;
+  static function generate():Dynamic;
 }

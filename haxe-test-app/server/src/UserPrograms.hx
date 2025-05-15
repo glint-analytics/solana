@@ -45,6 +45,22 @@ public function vote(connection:Connection, dashboardId:Int, roundId:Int, voter:
   });
 }
 
+public function unvote(connection:Connection, dashboardId:Int, roundId:Int, voter: Keypair):Promise<Bool> {
+
+  return new Promise((resolve, reject) -> {
+    var transaction = UserTransactions.unvote(dashboardId, roundId, voter.publicKey);
+          
+    connection.sendTransaction(transaction, [voter], {skipPreflight: false}).then(_ -> {
+      connection.confirmTransaction(_);
+    }).then(_ -> {
+      resolve(_);
+    }, error -> {
+      trace(error);
+      reject(error);
+    });
+  });
+}
+
 /*
     public function vote(dashboardId:Int, roundId:Int, voter: Keypair):Promise<Bool> {
 		trace('Fee payer account ${Config.feePayer.publicKey.toBase58()}');
