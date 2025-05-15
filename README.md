@@ -13,6 +13,7 @@
 - [Start the validator on localnet](#9-start-the-validator-on-localnet)
 - [Fixing errors on macOS](#10-fixing-errors-on-macos)
 - [Deploy the programs](#11-deploy-the-programs)
+- [Haxe test app](#13-haxe-test-app)
 
 ## System Prerequisites and dependencies
 
@@ -327,3 +328,15 @@ In some cases, could have errors to run tests on macOS. If so, try running the f
 ```bash
 export COPYFILE_DISABLE=1
 ```
+
+## 13. Haxe test app
+
+There's also a haxe test gui app.. which was useful to test things in haxe which made it easier to run things inside of Glint.
+
+You need
+- haxe ecosystem
+- haxe-ui core and haxe-ui html5 git version
+- node ecosystem
+
+Need to compile server version and run it with node
+Need to open client in browser.
