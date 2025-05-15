@@ -129,7 +129,7 @@ pub mod glint_vote {
     /**
      * Vote for a dashboard ID.
      * Requirements:
-     * - The voting period must have ended.
+     * - The voting period must not have ended.
      * - The voter must not have already voted.
      * - The dashboard account must be exist.
      * - All context accounts must be valid.
@@ -230,6 +230,111 @@ pub mod glint_vote {
 
         Ok(())
     }
+
+    /**
+     * Vote for a dashboard ID.
+     * Requirements:
+     * - The voting period must not have ended.
+     * - The voter must not have already voted.
+     * - The dashboard account must be exist.
+     * - All context accounts must be valid.
+     * @param ctx: The context to vote for a dashboard ID.
+     * @param _dashboard_id: The dashboard ID to vote for.
+     */
+     pub fn unvote(ctx: Context<Round>, _dashboard_id: u128, _round_id: u64) -> Result<()> {
+        // Fetch the accounts from the context
+        let voter_key: Pubkey = ctx.accounts.signer.key();
+        let round_account: &Account<'_, VotingState> = &ctx.accounts.round_account;
+        let winners_account: &mut Account<'_, WinnersState> = &mut ctx.accounts.winners_account;
+        let scores_account: &mut Account<'_, Scores> = &mut ctx.accounts.scores_account;
+        let voters_account: &mut Account<'_, Voters> = &mut ctx.accounts.voters_account;
+        let dashboard_account: &Account<'_, DashboardId> = &ctx.accounts.dashboard_account;
+
+        //// Ensures the `dashboard_account` is a valid ctx
+        // Derive the PDA for the dashboard account in the `glint_nft` program
+        let dashboard_account_pda: Pubkey = Pubkey::find_program_address(
+            &[&_dashboard_id.to_le_bytes()], // Seed for PDA
+            &glint_nft::id(), // The glint_nft program ID
+        ).0;
+        // Ensure the dashboard_account PDA matches the one passed via CPI
+        if dashboard_account_pda != dashboard_account.key() {
+            return Err(ErrorCode::InvalidDashboardAccount.into());
+        }
+        // Ensure the `dashboard_account` has an NFT ID associated with it
+        if dashboard_account.nft_id.is_none() {
+            return Err(ErrorCode::InvalidDashboardAccount.into());
+        }
+
+
+        //// Ensures the `scores_account` is a valid ctx
+        // Derive the PDA for the scores_account in this program
+        let scores_seed: &[&[u8]; 2] = &[
+            b"voting_state_scores".as_ref(),     // Static string seed
+            &_dashboard_id.to_le_bytes(),            // Convert _round_id to byte slice
+        ];
+        // Derive the PDA
+        let scores_account_pda: Pubkey = Pubkey::find_program_address(
+            scores_seed, // Seeds for PDA
+            &glint_vote::id(), // The glint_nft program ID
+        ).0;
+        // Ensure the `scores_account` is a valid ctx
+        if scores_account_pda != scores_account.key() {
+            return Err(ErrorCode::InvalidScoresAccount.into());
+        }
+        
+        //// Ensures the `voters_account` is a valid ctx
+        // Derive the PDA for the scores_account in this program
+        let voters_seed: &[&[u8]; 2] = &[
+            b"voting_state_voters", // Static string seed
+            &voter_key.as_ref() // Convert _round_id to byte slice
+        ];
+        // Derive the PDA
+        let voters_account_pda: Pubkey = Pubkey::find_program_address(
+            voters_seed, // Seeds for PDA
+            &glint_vote::id(), // The glint_nft program ID
+        ).0;
+        // Ensure the `voters_account` is a valid ctx
+        if voters_account_pda != voters_account.key() {
+            return Err(ErrorCode::InvalidVotersAccount.into());
+        }
+
+        //// Ensures the `winners_account` is a valid ctx
+        // Derive the PDA for the winners_account in this program
+        let winners_seed: &[&[u8]; 1] = &[ // Static string seed
+            &_round_id.to_le_bytes(), // Convert _round_id to byte slice
+        ];
+        // Derive the PDA
+        let winners_account_pda: Pubkey = Pubkey::find_program_address(
+            winners_seed, // Seeds for PDA
+            &glint_vote::id(), // The glint_nft program ID
+        ).0;
+        // Ensure the `winners_account` is a valid ctx
+        if winners_account_pda != winners_account.key() {
+            return Err(ErrorCode::InvalidWinnersAccount.into());
+        }
+
+        // Validate this round's data
+        is_voting_active(round_account)?;
+        has_voting_period_ended(round_account)?;
+        has_voter_not_voted(voters_account)?;
+
+        // Increment the score for the dashboard ID 
+        scores_account.score -= 1;
+        // Mark the voter as: not voted
+        voters_account.has_voted = false;
+
+        // Now update the top three after both mutable borrows have been released
+        update_top_three(winners_account, _dashboard_id, scores_account.score);
+
+        emit!(VoteUncasted {
+            round: round_account.curr_round,
+            voter: voter_key,
+            dashboard: _dashboard_id,
+            score: scores_account.score
+        });
+
+        Ok(())
+    }
 }
 
 ///////////////////// Internal Functions  /////////////////////
@@ -240,14 +345,14 @@ pub mod glint_vote {
  * @param dashboard_id: The dashboard ID to update.
  * @param score: The score to update.
  */
-fn update_top_three(winners_account: &mut Account<WinnersState>, dashboard_id: u128, score: u64) {
+ fn update_top_three(winners_account: &mut Account<WinnersState>, dashboard_id: u128, score: u64) {
     let wa: &mut Account<'_, WinnersState> = winners_account;
 
     // First check if dashboard_id is already in top three
     for i in 0..3 {
         if wa.top_three[i] == dashboard_id {
             wa.top_three_scores[i] = score;
-            
+
             // Reorder if necessary based on new score
             let mut j = i;
             while j > 0 && wa.top_three_scores[j] > wa.top_three_scores[j-1] {
@@ -255,19 +360,34 @@ fn update_top_three(winners_account: &mut Account<WinnersState>, dashboard_id: u
                 let temp_score = wa.top_three_scores[j-1];
                 wa.top_three_scores[j-1] = wa.top_three_scores[j];
                 wa.top_three_scores[j] = temp_score;
-                
+
                 // Swap dashboard ids
                 let temp_id = wa.top_three[j-1];
                 wa.top_three[j-1] = wa.top_three[j];
                 wa.top_three[j] = temp_id;
-                
+
                 j -= 1;
+            }
+            // Reorder downwards if necessary
+            let mut k = i;
+            while k < 2 && wa.top_three_scores[k] < wa.top_three_scores[k+1] {
+                // Swap scores
+                let temp_score = wa.top_three_scores[k+1];
+                wa.top_three_scores[k+1] = wa.top_three_scores[k];
+                wa.top_three_scores[k] = temp_score;
+
+                // Swap dashboard ids
+                let temp_id = wa.top_three[k+1];
+                wa.top_three[k+1] = wa.top_three[k];
+                wa.top_three[k] = temp_id;
+
+                k += 1;
             }
             return;
         }
     }
 
-     // If dashboard_id is not in top three, proceed with regular insertion
+    // If dashboard_id is not in top three, proceed with regular insertion
     if score > wa.top_three_scores[0] {
         wa.top_three[2] = wa.top_three[1];
         wa.top_three[1] = wa.top_three[0];
@@ -284,7 +404,9 @@ fn update_top_three(winners_account: &mut Account<WinnersState>, dashboard_id: u
         wa.top_three[2] = dashboard_id;
         wa.top_three_scores[2] = score;
     }
-}
+
+    // TODO if dashboard is not in top 3 anymore
+ }
 
 /**
  * Check if a voting period is active.
@@ -316,6 +438,18 @@ fn has_voting_period_ended(round_account: &VotingState) -> Result<()> {
 fn has_voter_already_voted(voters: &Voters) -> Result<()> {
     if voters.has_voted == true {
         return Err(ErrorCode::AlreadyVoted.into());
+    }
+    Ok(())
+}
+
+/**
+ * Check if a voter has already voted in the current round.
+ * @param round_account: The voting state account.
+ * @param voter_key: The public key of the voter.
+ */
+ fn has_voter_not_voted(voters: &Voters) -> Result<()> {
+    if voters.has_voted == false {
+        return Err(ErrorCode::NotVoted.into());
     }
     Ok(())
 }
@@ -468,6 +602,14 @@ pub struct VoteCasted {
     pub score: u64,                             // The new score for the dashboard ID
 }
 
+#[event]
+pub struct VoteUncasted {
+    pub round: u64,                             // The round that was voted in
+    pub voter: Pubkey,                          // The voter's public key
+    pub dashboard: u128,                         // The dashboard ID that was voted for
+    pub score: u64,                             // The new score for the dashboard ID
+}
+
 ///////////////////// Error Handling /////////////////////
 
 #[error_code]
@@ -480,6 +622,8 @@ pub enum ErrorCode {
     VotingPeriodEnded,
     #[msg("This address has already voted in the current voting period.")]
     AlreadyVoted,
+    #[msg("This address has not voted in the current voting period. Cannot undo vote.")]
+    NotVoted,
     #[msg("The dashboard account is invalid.")]
     InvalidDashboardAccount,
     #[msg("The round account is invalid.")]
