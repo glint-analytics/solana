@@ -1,0 +1,11 @@
+/node_modules/
+.DS_Store
+/target/
+/.anchor/
+test-ledger
+scripts/logs
+.env
+/haxe-test-app/client/build
+/haxe-test-app/client/.vscode
+/haxe-test-app/server/bin
+/haxe-test-app/server/.vscode

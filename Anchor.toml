@@ -1,0 +1,41 @@
+[features]
+seeds = false
+skip-lint = false
+[programs.localnet]
+glint_nft = "7TQ26XbDSZMda68uSueTLGQ9zXEN3Tx5bMyoLMSzKSzN"
+glint_vote = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_reward = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
+
+[programs.devnet]
+glint_nft = "7TQ26XbDSZMda68uSueTLGQ9zXEN3Tx5bMyoLMSzKSzN"
+glint_vote = "7y85MrK95Z9cPVsdSbLKrsGPHjAxPA8HCpY13WFZs5nE"
+glint_reward = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
+
+[programs.testnet]
+glint_nft = "7TQ26XbDSZMda68uSueTLGQ9zXEN3Tx5bMyoLMSzKSzN"
+glint_vote = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
+glint_reward = "EyV27BM3gG2a9LozgN2cUL89gZ9SKQvq3PtaKiXQMyRe"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+# cluster = "Devnet"
+# wallet = "/Users/alt/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test_vote = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 './tests/vote.test.ts'"
+
+[test]
+startup_wait = 10000
+
+[[test.genesis]]
+address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+program = "test-programs/metaplex_token_metadata_program.so"
+
+[[test.validator.account]]
+address = "7FTdQdMqkk5Xc2oFsYR88BuJt2yyCPReTpqr3viH6b6C"
+filename = "test-programs/account.json"

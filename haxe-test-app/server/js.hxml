@@ -1,0 +1,6 @@
+--class-path src
+--js bin/main.js
+--main Main
+--library http
+--library hxnodejs
+-D no-deprecation-warnings
