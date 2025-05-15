@@ -19,7 +19,7 @@ const [configPDA] = PublicKey.findProgramAddressSync(
 const setDashboardId = async (dashboardId: number, mint: PublicKey) => {
   await log(`Setting dashboard ID ${dashboardId}`);
   const [dashboardPDA] = PublicKey.findProgramAddressSync(
-    [new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 8)],
+    [new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 16)],
     program.programId
   );
   const tx = await program.methods

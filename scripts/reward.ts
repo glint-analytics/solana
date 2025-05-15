@@ -115,7 +115,7 @@ async function claimReward(
 
   // Get the dashboard account
   const [dashboardAccount] = PublicKey.findProgramAddressSync(
-    [new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 8)],
+    [new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 16)],
     nftProgram.programId
   );
   await logAccount(

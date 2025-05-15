@@ -37,7 +37,7 @@ async function vote(dashboardId: number, roundId: number, voter: Keypair) {
 
   await log(`Voting on dashboard ID ${dashboardId} for Round ${roundId}`);
   const [dashboardAccount] = PublicKey.findProgramAddressSync(
-    [new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 8)],
+    [new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 16)],
     nftProgram.programId
   );
   await logAccount(`Dashboard PDA ${dashboardAccount.toBase58()}`);
@@ -45,7 +45,7 @@ async function vote(dashboardId: number, roundId: number, voter: Keypair) {
   const [scoresAccount] = PublicKey.findProgramAddressSync(
     [
       Buffer.from("voting_state_scores"),
-      new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 8),
+      new anchor.BN(dashboardId).toArrayLike(Buffer, "le", 16),
     ],
     voteProgram.programId
   );

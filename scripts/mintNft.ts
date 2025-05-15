@@ -54,7 +54,7 @@ export async function mintNFT(
     dashboardId ?? Math.floor(Math.random() * 1000000);
   await log(`Random dashboard ID ${randomDashboardId}`);
   const [dashboardPDA] = PublicKey.findProgramAddressSync(
-    [new anchor.BN(randomDashboardId).toArrayLike(Buffer, "le", 8)],
+    [new anchor.BN(randomDashboardId).toArrayLike(Buffer, "le", 16)],
     program.programId
   );
   await logAccount(`Dashboard PDA ${dashboardPDA.toBase58()}`);

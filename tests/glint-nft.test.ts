@@ -83,7 +83,7 @@ describe("glint-nft", async () => {
   it("Should not be able to mint before initialization", async () => {
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(777);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
@@ -124,7 +124,7 @@ describe("glint-nft", async () => {
   it("Should not be able to set dashboard id before initialization", async () => {
     // Generate the seed for the intitialization of the Dashboard Account
     const dashboard_id = new anchor.BN(777);
-    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 8)];
+    const seeds = [dashboard_id.toArrayLike(Buffer, "le", 16)];
     let dashboardAccount = anchor.web3.PublicKey.findProgramAddressSync(
       seeds,
       program.programId
